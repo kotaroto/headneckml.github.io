@@ -217,6 +217,7 @@
   <script defer>
     Dropzone.autoDiscover = false;
     var LABELS = ["Normal", "AOM", "CSOM", "Cerumen", "OE"];
+    var LABELS_BIN = ["Normal", "Abnormal"];
     $(document).ready(() => {
 
       $('.clear-all').on("click", () => {
@@ -267,7 +268,7 @@
                 let prob_binary = Array.from(probs_binary.dataSync());
                 console.log(prob_binary);
                 //binary 
-                $(file.previewTemplate).find('.pred-label').append(document.createTextNode(LABELS[pred_binary]));
+                $(file.previewTemplate).find('.pred-label').append(document.createTextNode(LABELS_BIN[pred_binary]));
                 
                 prob_binary = prob_binary.map(function (prob) {
                   return prob.toFixed(1);
@@ -291,25 +292,6 @@
             reader.readAsDataURL(file);
 
           });
-        },
-        success: function (file, response) {
-          var LABELS = ["Normal", "AOM", "CSOM", "Cerumen", "OE"];
-          response = JSON.parse(response);
-          $(file.previewTemplate).find('.pred-label').append(document.createTextNode(response.label));
-          $(file.previewTemplate).find('.pred-multi-label').append(document.createTextNode(response.label_multi));
-
-          response.probs = response.probs[0].map(function (prob) {
-            return prob.toFixed(1);
-          });
-
-          response.probs_multi[0].forEach(function (prob, i) {
-            var LABELS = ["Normal", "AOM", "CSOM", "Cerumen", "OE"];
-            $(file.previewTemplate).find('.pred-multi-prob').append(document.createTextNode(LABELS[i] + ":" + prob.toFixed(1)));
-            $(file.previewTemplate).find('.pred-multi-prob').append(document.createElement("br"));
-          });
-
-          $(file.previewTemplate).find('.pred-prob').append(document.createTextNode(response.probs));
-          $(file.previewTemplate).find('.dz-progress').fadeOut();
         },
         url: '/'
       });
