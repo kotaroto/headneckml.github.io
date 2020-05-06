@@ -47,7 +47,7 @@
   .div-th,
   .div-td {
     display: table-cell;
-    padding: 8px 15px;
+    padding: 2px 5px;
     border-bottom: 1px solid #eaeff0;
     vertical-align: middle;
   }
@@ -99,13 +99,43 @@
     <div id="particles-js" style="position: fixed;"></div>
     <br>
     <div class="container">
-      <div class="row no-gutters slider-text align-items-center justify-content-center" data-scrollax-parent="true"
+      <div class="row no-gutters slider-text align-items-start justify-content-center" data-scrollax-parent="true"
         style="top: 150px;">
-        <div class="col-md-10 ftco-animate text-center" data-scrollax=" properties: { translateY: '20%' }">
-          <h1 class="mb-4" data-scrollax="properties: { translateY: '10%', opacity: 1.6 }">Use the
+        <div class="col-md-5">
+          <section class="ftco-section ftco-degree-bg" style="background-color: #eaeff0; padding: 2em;">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-12 ftco-animate">
+                  <p>
+                    <img src="images/model_explainer_cerumen.png" alt="" class="img-fluid">
+                  </p>
+                  <h2 class="mb-3">#1. Tympanic Membrane Abnormality Classifier</h2>
+                  <p>We created an original tympanic membrane (TM) image database consisting of a total of 400 images by
+                    utilizing publicly available online databases and images.
+                    Specifically, we selected appropriate images from the Van Akdamar Hospital eardrum database and
+                    individual images from Google Images (Google Inc., Mountain View, CA)
+                    queried using the terms “tympanic membrane,” “otoscopic image,” “normal,” “acute otitis media,”
+                    “otitis externa,” and “chronic suppurative otitis media.”
+                    The database was bipartitely organized into normal (196) and abnormal (204) classes. </p>
+
+                  <h2 class="mb-3">#2. Try some of the images below. Download the images and test our.</h2>
+                  <p>
+                    <a download="test-image.jpg" href="images/100_0095.png">
+                      <img src="images/100_0095.png" alt="" class="img-fluid" style="max-width: 224px; max-height: 224px;">
+                    </a>
+                    
+                  </p>
+                </div> <!-- .col-md-8 -->
+
+              </div>
+            </div>
+          </section> <!-- .section -->
+        </div>
+        <div class="col-md-7 ftco-section ftco-animate text-center" style="padding-left: 2em;padding-right: 2em;">
+          <h1 class="mb-4">Use the
             <strong>dropzone</strong> to try our model</h1>
 
-         
+
           <form action="/upload/" class="dropzone" id="uploadzone" style="color:#8b8b92">
             <DIV class="dz-message needsclick">
               Drop images here or click to upload.<BR>
@@ -113,7 +143,7 @@
                 <strong>below</strong>)</SPAN>
             </DIV>
           </form>
-          <br/>
+          <br />
           <div class="row">
             <div class="col-md-10"></div>
             <div class="col-md-2">
@@ -143,7 +173,7 @@
               <div class="div-td"><span class="pred-prob" data-dz-prob></span></div>
 
               <div class="div-td"><span class="pred-multi-label" data-dz-label></span> </div>
-              <div class="div-td"><span class="pred-multi-prob" data-dz-prob></span></div>
+              <div class="div-td" style="text-align: left; "><span class="pred-multi-prob " data-dz-prob></span></div>
               <div class="div-td">
                 <span data-dz-remove><a href="#"><i class="icon-times" alt="Click me to remove the file."></i> Remove
                     Image</a></span>
@@ -162,7 +192,7 @@
               <div class="div-th">Class probabilities <br> (Normal, Abnormal)</div>
               <div class="div-th">Multi Classification Label</div>
               <div class="div-th">Multi Class probabilities <br> (Normal, AOM, CSOM, Cerumen, OE)</div>
-              <div class="div-th"></div>
+              <div class="div-th">-</div>
             </div>
           </div>
 
@@ -207,8 +237,8 @@
 
   <script>
     (async () => {
-      model_binary = await tf.loadLayersModel("tensorflowjs/binary/model.json", strict=false);
-      model_multi = await tf.loadLayersModel("tensorflowjs/multi/model.json"); 
+      model_binary = await tf.loadLayersModel("tensorflowjs/binary/model.json", strict = false);
+      model_multi = await tf.loadLayersModel("tensorflowjs/multi/model.json");
 
     })();
 
@@ -269,7 +299,7 @@
                 console.log(prob_binary);
                 //binary 
                 $(file.previewTemplate).find('.pred-label').append(document.createTextNode(LABELS_BIN[pred_binary]));
-                
+
                 prob_binary = prob_binary.map(function (prob) {
                   return prob.toFixed(1);
                 });
@@ -278,7 +308,7 @@
 
                 //multi
                 $(file.previewTemplate).find('.pred-multi-label').append(document.createTextNode(LABELS[pred_mutli]));
-                
+
                 prob_multi.forEach(function (prob, i) {
                   var LABELS = ["Normal", "AOM", "CSOM", "Cerumen", "OE"];
                   $(file.previewTemplate).find('.pred-multi-prob').append(document.createTextNode(LABELS[i] + ":" + prob.toFixed(1)));
@@ -287,11 +317,13 @@
 
                 $(file.previewTemplate).find('.dz-progress').fadeOut();
               };
-              
+
             };
             reader.readAsDataURL(file);
 
           });
+
+
         },
         url: '/'
       });
